@@ -52,6 +52,7 @@ public sealed class GetStops : ISlice
 		public required string Name { get; set; }
 		public Uri? ImageUri { get; set; }
 		public required int ItineraryId { get; set; }
+		public bool? Suggested { get; set; }
 	}
 
 	public sealed class StopMapProfile : Profile

@@ -12,5 +12,7 @@ public sealed class StopConfiguration : IEntityTypeConfiguration<Stop>
 		builder.Property(s => s.Id).UseIdentityColumn();
 		builder.Property(s => s.Name).IsRequired().HasMaxLength(200);
 		builder.HasOne(s => s.Itinerary).WithMany(i => i.Stops).HasForeignKey(s => s.ItineraryId).OnDelete(DeleteBehavior.Cascade);
+		builder.Ignore(s => s.DomainEvents);
+		builder.Property(s => s.Suggested).HasDefaultValue(false);
 	}
 }

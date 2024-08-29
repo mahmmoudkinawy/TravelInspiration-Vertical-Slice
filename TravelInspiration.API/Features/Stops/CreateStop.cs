@@ -28,6 +28,9 @@ public sealed class CreateStop : ISlice
 		public int ItineraryId { get; set; } = itineraryId;
 		public string Name { get; } = name;
 		public string? ImageUri { get; } = imageUri;
+
+		// on creation via this command, you cannot pass
+		// through a "suggested" field value
 	}
 
 	public sealed class CreateStopCommandValidator : AbstractValidator<CreateStopCommand>

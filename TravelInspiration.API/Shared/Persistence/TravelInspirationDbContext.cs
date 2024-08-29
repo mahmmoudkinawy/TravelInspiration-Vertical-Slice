@@ -1,10 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using TravelInspiration.API.Shared.Domain.Entities;
+using TravelInspiration.API.Shared.DomainEvents;
 
 namespace TravelInspiration.API.Shared.Persistence;
 
-public sealed class TravelInspirationDbContext(DbContextOptions<TravelInspirationDbContext> options) : DbContext(options)
+public sealed class TravelInspirationDbContext(DbContextOptions<TravelInspirationDbContext> options, IPublisher publisher) : DbContext(options)
 {
+	private readonly IPublisher _publisher = publisher;
+
 	public DbSet<Itinerary> Itineraries => Set<Itinerary>();
 	public DbSet<Stop> Stops => Set<Stop>();
 
@@ -87,7 +91,7 @@ public sealed class TravelInspirationDbContext(DbContextOptions<TravelInspiratio
 		base.OnModelCreating(modelBuilder);
 	}
 
-	public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+	public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
 	{
 		foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
 		{
@@ -106,6 +110,19 @@ public sealed class TravelInspirationDbContext(DbContextOptions<TravelInspiratio
 			}
 		}
 
-		return base.SaveChangesAsync(cancellationToken);
+		var domainEvents = ChangeTracker
+			.Entries<IHasDomainEvent>()
+			.Select(e => e.Entity.DomainEvents)
+			.SelectMany(e => e)
+			.Where(domainEvent => !domainEvent.IsPublished)
+			.ToArray();
+
+		foreach (var domainEvent in domainEvents)
+		{
+			await _publisher.Publish(domainEvent, cancellationToken);
+			domainEvent.IsPublished = true;
+		}
+
+		return await base.SaveChangesAsync(cancellationToken);
 	}
 }
