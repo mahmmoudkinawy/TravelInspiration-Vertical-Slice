@@ -12,15 +12,17 @@ public sealed class CreateStop : ISlice
 {
 	public void AddEndpoint(IEndpointRouteBuilder endpointRouteBuilder)
 	{
-		endpointRouteBuilder.MapPost(
-			"api/itineraries/{itineraryId}/stops",
-			(int itineraryId, CreateStopCommand createStopCommand, IMediator mediator, CancellationToken cancellationToken) =>
-			{
-				createStopCommand.ItineraryId = itineraryId;
+		endpointRouteBuilder
+			.MapPost(
+				"api/itineraries/{itineraryId}/stops",
+				(int itineraryId, CreateStopCommand createStopCommand, IMediator mediator, CancellationToken cancellationToken) =>
+				{
+					createStopCommand.ItineraryId = itineraryId;
 
-				return mediator.Send(createStopCommand, cancellationToken);
-			}
-		);
+					return mediator.Send(createStopCommand, cancellationToken);
+				}
+			)
+			.RequireAuthorization();
 	}
 
 	public sealed class CreateStopCommand(int itineraryId, string name, string? imageUri) : IRequest<IResult>

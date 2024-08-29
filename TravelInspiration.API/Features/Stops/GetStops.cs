@@ -11,13 +11,15 @@ public sealed class GetStops : ISlice
 {
 	public void AddEndpoint(IEndpointRouteBuilder endpointRouteBuilder)
 	{
-		endpointRouteBuilder.MapGet(
-			"api/itineraries/{itineraryId}/stops",
-			(int itineraryId, IMediator mediator, CancellationToken cancellationToken) =>
-			{
-				return mediator.Send(new GetStopsQuery(itineraryId), cancellationToken);
-			}
-		);
+		endpointRouteBuilder
+			.MapGet(
+				"api/itineraries/{itineraryId}/stops",
+				(int itineraryId, IMediator mediator, CancellationToken cancellationToken) =>
+				{
+					return mediator.Send(new GetStopsQuery(itineraryId), cancellationToken);
+				}
+			)
+			.RequireAuthorization();
 	}
 
 	public sealed class GetStopsQuery(int itineraryId) : IRequest<IResult>

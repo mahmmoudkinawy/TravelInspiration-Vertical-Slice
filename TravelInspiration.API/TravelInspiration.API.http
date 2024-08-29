@@ -23,6 +23,7 @@ Accept: application/json
 POST {{HostAddressRoot}}/api/itineraries/1/stops
 Accept: application/json
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Im1haG1tIiwic3ViIjoibWFobW0iLCJqdGkiOiI0OTVmNzE1MiIsImF1ZCI6InRyYXZlbGluc3BpcmF0aW9uLWFwaSIsIm5iZiI6MTcyNDk1NTIyOCwiZXhwIjoxNzMyOTA0MDI4LCJpYXQiOjE3MjQ5NTUyMjgsImlzcyI6ImRvdG5ldC11c2VyLWp3dHMifQ.Y12fFmPLq3AF6PBt0xVR6q34rK9PmQXJWVaAxgZFPPQ
 
 {
   "name":"A stop for testing",
@@ -58,3 +59,11 @@ Content-Type: application/json
 {
   "name": "An updated name"
 }
+
+###
+
+GET {{HostAddressRoot}}/api/itineraries
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Im1haG1tIiwic3ViIjoibWFobW0iLCJqdGkiOiI0OTVmNzE1MiIsImF1ZCI6InRyYXZlbGluc3BpcmF0aW9uLWFwaSIsIm5iZiI6MTcyNDk1NTIyOCwiZXhwIjoxNzMyOTA0MDI4LCJpYXQiOjE3MjQ5NTUyMjgsImlzcyI6ImRvdG5ldC11c2VyLWp3dHMifQ.Y12fFmPLq3AF6PBt0xVR6q34rK9PmQXJWVaAxgZFPPQ
+
+###

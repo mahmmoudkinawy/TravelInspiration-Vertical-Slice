@@ -13,16 +13,18 @@ public sealed class UpdateStop : ISlice
 {
 	public void AddEndpoint(IEndpointRouteBuilder endpointRouteBuilder)
 	{
-		endpointRouteBuilder.MapPut(
-			"/api/itineraries/{itineraryId}/stops/{stopId}",
-			(int itineraryId, int stopId, UpdateStopCommand updateStopCommand, IMediator mediator, CancellationToken cancellationToken) =>
-			{
-				updateStopCommand.ItineraryId = itineraryId;
-				updateStopCommand.StopId = stopId;
+		endpointRouteBuilder
+			.MapPut(
+				"/api/itineraries/{itineraryId}/stops/{stopId}",
+				(int itineraryId, int stopId, UpdateStopCommand updateStopCommand, IMediator mediator, CancellationToken cancellationToken) =>
+				{
+					updateStopCommand.ItineraryId = itineraryId;
+					updateStopCommand.StopId = stopId;
 
-				return mediator.Send(updateStopCommand, cancellationToken);
-			}
-		);
+					return mediator.Send(updateStopCommand, cancellationToken);
+				}
+			)
+			.RequireAuthorization();
 	}
 
 	public sealed class UpdateStopCommand : IRequest<IResult>

@@ -11,13 +11,15 @@ public sealed class GetItineraries : ISlice
 {
 	public void AddEndpoint(IEndpointRouteBuilder endpointRouteBuilder)
 	{
-		endpointRouteBuilder.MapGet(
-			"api/itineraries",
-			(string? searchFor, IMediator mediator, CancellationToken cancellationToken) =>
-			{
-				return mediator.Send(new GetItinerariesQuery(searchFor), cancellationToken);
-			}
-		);
+		endpointRouteBuilder
+			.MapGet(
+				"api/itineraries",
+				(string? searchFor, IMediator mediator, CancellationToken cancellationToken) =>
+				{
+					return mediator.Send(new GetItinerariesQuery(searchFor), cancellationToken);
+				}
+			)
+			.RequireAuthorization();
 	}
 
 	public sealed class GetItinerariesQuery(string? searchFor) : IRequest<IResult>
