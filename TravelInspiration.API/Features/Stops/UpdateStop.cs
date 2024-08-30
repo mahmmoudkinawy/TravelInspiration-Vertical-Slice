@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using TravelInspiration.API.Shared.Domain.Entities;
 using TravelInspiration.API.Shared.Events;
 using TravelInspiration.API.Shared.Persistence;
+using TravelInspiration.API.Shared.Security;
 using TravelInspiration.API.Shared.Slices;
 
 namespace TravelInspiration.API.Features.Stops;
@@ -24,7 +25,7 @@ public sealed class UpdateStop : ISlice
 					return mediator.Send(updateStopCommand, cancellationToken);
 				}
 			)
-			.RequireAuthorization();
+			.RequireAuthorization(AuthorizationPolicies.HasWriteActionPolicy);
 	}
 
 	public sealed class UpdateStopCommand : IRequest<IResult>
