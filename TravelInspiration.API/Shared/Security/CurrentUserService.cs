@@ -8,6 +8,6 @@ public sealed class CurrentUserService(IHttpContextAccessor httpContextAccessor)
 
 	public string? UserId
 	{
-		get { return _httpContextAccessor.HttpContext.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value; }
+		get { return _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier); }
 	}
 }
